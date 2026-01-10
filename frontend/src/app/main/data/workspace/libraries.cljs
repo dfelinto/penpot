@@ -44,6 +44,7 @@
    [app.main.data.workspace.shapes :as dwsh]
    [app.main.data.workspace.specialized-panel :as dwsp]
    [app.main.data.workspace.thumbnails :as dwt]
+   [app.main.data.workspace.tokens.propagation :as dwtp]
    [app.main.data.workspace.transforms :as dwtr]
    [app.main.data.workspace.undo :as dwu]
    [app.main.data.workspace.zoom :as dwz]
@@ -1021,6 +1022,7 @@
         (rx/of
          (dwu/start-undo-transaction undo-id)
          (dch/commit-changes changes)
+         (dwtp/propagate-workspace-tokens)
          (ptk/data-event :layout/update {:ids update-layout-ids :undo-group undo-group})
          (dwu/commit-undo-transaction undo-id)
          (dws/select-shape (:id new-shape) false))))))
@@ -1219,6 +1221,7 @@
                                         (sync-file (:current-file-id state)
                                                    (:id library)))
                                       libraries-need-sync))
+                 (dwtp/propagate-workspace-tokens)
                  (st/emit! (ntf/hide)))
 
             do-dismiss

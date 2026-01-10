@@ -23,7 +23,7 @@
    [app.main.data.event :as ev]
    [app.main.data.helpers :as dsh]
    [app.main.data.workspace.common :as dwc]
-   [app.main.data.workspace.libraries :as dwl]
+  ;;  [app.main.data.workspace.libraries :as dwl]
    [app.main.data.workspace.modifiers :as dwm]
    [app.main.data.workspace.selection :as dws]
    [app.main.data.workspace.shapes :as dwsh]
@@ -886,49 +886,7 @@
   responsabilities: add the typography to the library and apply it to
   the currently selected text shapes (being aware of the open text
   editors."
-  [file-id]
-  (ptk/reify ::add-typography
-    ptk/WatchEvent
-    (watch [_ state _]
-      (let [selected   (dsh/lookup-selected state)
-            objects    (dsh/lookup-page-objects state)
-
-            xform      (comp (keep (d/getf objects))
-                             (filter cfh/text-shape?))
-            shapes     (into [] xform selected)
-            shape      (first shapes)
-
-            values     (current-text-values
-                        {:editor-state (dm/get-in state [:workspace-editor-state (:id shape)])
-                         :shape shape
-                         :attrs txt/text-node-attrs})
-
-            multiple? (or (> 1 (count shapes))
-                          (d/seek (partial = :multiple)
-                                  (vals values)))
-
-            values    (-> (d/without-nils values)
-                          (select-keys
-                           (d/concat-vec txt/text-font-attrs
-                                         txt/text-spacing-attrs
-                                         txt/text-transform-attrs)))
-
-            typ-id    (uuid/next)
-            typ       (-> (if multiple?
-                            txt/default-typography
-                            (merge txt/default-typography values))
-                          (generate-typography-name)
-                          (assoc :id typ-id))]
-
-        (rx/concat
-         (rx/of (dwl/add-typography typ)
-                (ptk/event ::ev/event {::ev/name "add-asset-to-library"
-                                       :asset-type "typography"}))
-
-         (when (not multiple?)
-           (rx/of (update-attrs (:id shape)
-                                {:typography-ref-id typ-id
-                                 :typography-ref-file file-id}))))))))
+  [file-id])
 
 ;; -- New Editor
 

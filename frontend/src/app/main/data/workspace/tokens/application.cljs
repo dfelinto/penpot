@@ -23,7 +23,7 @@
    [app.main.data.notifications :as ntf]
    [app.main.data.style-dictionary :as sd]
    [app.main.data.tinycolor :as tinycolor]
-   [app.main.data.workspace :as udw]
+  ;;  [app.main.data.workspace :as udw]
    [app.main.data.workspace.colors :as wdc]
    [app.main.data.workspace.shape-layout :as dwsl]
    [app.main.data.workspace.shapes :as dwsh]
@@ -85,15 +85,7 @@
 (defn update-rotation
   ([value shape-ids attributes] (update-rotation value shape-ids attributes nil))
   ([value shape-ids _attributes page-id] ; The attributes param is needed to have the same arity that other update functions
-   (ptk/reify ::update-shape-rotation
-     ptk/WatchEvent
-     (watch [_ _ _]
-       (when (number? value)
-         (rx/of
-          (udw/trigger-bounding-box-cloaking shape-ids)
-          (udw/increase-rotation shape-ids value nil
-                                 {:page-id page-id
-                                  :ignore-touched true})))))))
+   ))
 
 (defn update-stroke-width
   ([value shape-ids attributes] (update-stroke-width value shape-ids attributes nil))
