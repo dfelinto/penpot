@@ -13,6 +13,7 @@
    [app.common.files.helpers :as cfh]
    [app.common.files.shapes-helpers :as cfsh]
    [app.common.geom.point :as gpt]
+   [app.common.json :as json]
    [app.common.logging :as log]
    [app.common.logic.libraries :as cll]
    [app.common.logic.shapes :as cls]
@@ -26,6 +27,7 @@
    [app.common.types.file :as ctf]
    [app.common.types.library :as ctl]
    [app.common.types.shape.layout :as ctsl]
+   [app.common.types.tokens-lib :as ctob]
    [app.common.types.typography :as ctt]
    [app.common.uuid :as uuid]
    [app.config :as cf]
@@ -58,7 +60,9 @@
    [app.util.i18n :refer [tr]]
    [beicon.v2.core :as rx]
    [cuerdas.core :as str]
-   [potok.v2.core :as ptk]))
+   [okulary.core :as l]
+   [potok.v2.core :as ptk]
+   [rumext.v2 :as mf]))
 
 ;; Change this to :info :debug or :trace to debug this module, or :warn to reset to default
 (log/set-level! :warn)
@@ -1429,6 +1433,17 @@
                         (fn [state]
                           (update state :thumbnails merge thumbnails))))))))))
 
+(defn has-tokens?
+  [library]
+  (let [_ (println "XXX library" library)
+        ;; _ (println "XXX Checking if library has tokens" library-data)
+        ;; tokens-json (some-> {:tokens-lib library-data}
+        ;;                     ctob/export-dtcg-json
+        ;;                     (json/encode :key-fn identity :indent 2))
+        ]
+    ;; (not (empty? tokens-json))))
+    true))
+
 (defn link-file-to-library
   [file-id library-id]
   (ptk/reify ::attach-library
@@ -1466,7 +1481,10 @@
                                                  :file-id file-id
                                                  :library-id library-id
                                                  :variants-count variants-count
-                                                 :library-used-in (:used-in library-usage)}))))))))))
+                                                 :library-used-in (:used-in library-usage)})))))
+         (when (has-tokens? library)
+           (st/emit! (modal/show :tokens/import-from-library {:file-id file-id
+                                                              :library-id library-id}))))))))
 
 (defn unlink-file-from-library
   [file-id library-id]

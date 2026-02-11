@@ -3535,6 +3535,20 @@ msgid_plural "modals.unpublish-shared-confirm.title"
 msgstr[0] "Unpublish library"
 msgstr[1] "Unpublish libraries"
 
+msgid "modals.import-library-tokens.title"
+msgstr "Import tokens from library?"
+
+msgid "modals.import-library-tokens.description"
+msgstr ""
+"The library has tokens and themes which "
+"are likely used by its components."
+
+msgid "modals.import-library-tokens.not-import"
+msgstr "Don't import"
+
+msgid "modals.import-library-tokens.import"
+msgstr "Import tokens"
+
 #: src/app/main/ui/workspace/sidebar/options/menus/component.cljs, src/app/main/ui/workspace/context_menu.cljs
 #, unused
 msgid "modals.update-remote-component-in-bulk.hint"

@@ -37,6 +37,7 @@
    [app.main.ui.ds.product.empty-state :refer [empty-state*]]
    [app.main.ui.hooks :as h]
    [app.main.ui.icons :as deprecated-icon]
+   [app.main.ui.workspace.tokens.import-from-library]
    [app.util.color :as uc]
    [app.util.dom :as dom]
    [app.util.i18n :refer [c tr]]
